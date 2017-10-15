@@ -1,0 +1,29 @@
+{
+  "name": "orvibo-b25-server",
+  "version": "1.0.0",
+  "description": "A server to control the Orvibo B25 range of smart sockets",
+  "main": "Orvibo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Example.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandysound/orvibo-b25-server.git"
+  },
+  "keywords": [
+    "Orvibo",
+    "B25",
+    "Smart",
+    "Socket"
+  ],
+  "author": "Sandy Milne",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sandysound/orvibo-b25-server/issues"
+  },
+  "homepage": "https://github.com/sandysound/orvibo-b25-server#readme",
+  "dependencies": {
+    "buffer-crc32": "^0.2.13"
+  }
+}

@@ -16,10 +16,7 @@ You will need to add the Orvibo PK key to decrypt and encrypt the initial packet
 Once you have this key you will need to add it the ``OrviboSettings.js`` file.
 
 
-Because these new sockets don't use UDP packets to communicate like the older versions you will also need to redirect all traffic from the host name 
-```
-homemate.orvibo.com
-```
+Because these new sockets don't use UDP packets to communicate like the older versions you will also need to redirect all traffic from the host name ``homemate.orvibo.com``
 on TCP port 10001 the computer running the server.
 
 I used an Ubuntu machine running dnsmasq and set this server as my DNS server in my router but depending on your network you might have to do it differntly.
@@ -37,7 +34,6 @@ to the official Orvibo server.
 Clone the repo and then run
 ```
 npm install 
-
 ```
 to install the dependencies (buffer-crc32)
 
@@ -50,7 +46,6 @@ To start the example http server run
 
 ```
 npm start 
-
 ```
 This will start the Orvibo socket server create a basic example HTTP server used for interacting with sockets.
 Calling this http server with no parameters will return the uid, state, modelId and name of the socket.
