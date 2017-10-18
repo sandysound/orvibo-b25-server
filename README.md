@@ -8,6 +8,9 @@ When they arrived they were actually the B25 (AUS) version and I could not find 
 After a bit of searching, reading research by other people and some time with Wireshark I manged to setup
 a relay server that would decrypt the packets going back and forth between the sockets and the server and worked out the protocol.
 
+After that I created this project which is basically a server that the Orvibo sockets connect to instead of the actual one.
+Once the sockets have connected you can toggle them on and off 
+
 ## Getting Started
 
 To run this server you will need to have Node.js installed. I run v6.11.0 but it may work with earlier versions.
