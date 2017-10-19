@@ -1,6 +1,6 @@
 const crc32 = require('buffer-crc32');
 const crypto = require('crypto');
-const Settings = require('./orviboSettings');
+const Settings = require('./OrviboSettings');
 
 const ORVIBO_KEY = Settings.ORVIBO_KEY;
 
