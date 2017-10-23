@@ -6,7 +6,8 @@ const httpPort = 3000;
 
 // Create a settings object to pass PK key and map sockets to names
 const settings = {
-    ORVIBO_KEY: '', // put your PK key here as plain text
+    LOG_PACKET: false, //Show incoming packet data from the socket
+    ORVIBO_KEY: '', // put your PK key here as plain text (See Readme)
     plugInfo : [
         // Add uid and a name so you can easily identify the connected sockets
         {
@@ -29,7 +30,7 @@ orvbio.on('plugStateUpdated', ({uid, state , name}) => {
 });
 
 // The plug sends a hearbeat to let the server know it's still alive
-orvbio.on('gotHeartbeat', ({uid, state , name}) => {
+orvbio.on('gotHeartbeat', ({uid, name}) => {
     console.log(`Plug ${name} ${uid} sent heartbeat`);
 });
 
@@ -66,7 +67,7 @@ const requestHandler = (request, response) => {
     response.end(JSON.stringify(sockets));
 };
 
-const httpServer = http.createServer(requestHandler)
+const httpServer = http.createServer(requestHandler);
 
 httpServer.listen(httpPort, (err) => {
     if (err) {

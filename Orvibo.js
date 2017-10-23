@@ -1,24 +1,20 @@
 const net = require('net');
-const util = require('util');
 const Packet = require('./OrviboPacket');
 const PacketBuilder = require('./PacketBuilder');
 const Utils = require('./Utils');
 const Settings = require('./OrviboSettings');
 const EventEmitter = require('events').EventEmitter;
 
-let socketSettings = Settings;
-
-let ORVIBO_KEY = socketSettings.ORVIBO_KEY;
-let LOG_PACKET = socketSettings.LOG_PACKET;
-
+let ORVIBO_KEY = Settings.ORVIBO_KEY;
+let LOG_PACKET = Settings.LOG_PACKET;
 let PLUG_INFO = Settings.plugInfo;
 
 const Orvibo = function(userSettings) {
     // Allow user to pass in settings
     if (userSettings != null) {
-        socketSettings = userSettings;
-        ORVIBO_KEY = socketSettings.ORVIBO_KEY;
-        LOG_PACKET = socketSettings.LOG_PACKET;
+        ORVIBO_KEY = userSettings.ORVIBO_KEY;
+        LOG_PACKET = userSettings.LOG_PACKET;
+        PLUG_INFO = userSettings.plugInfo;
     }
 
     if (ORVIBO_KEY === '') {
@@ -66,6 +62,7 @@ let helloHandler = (plugPacket, socket) => {
         encryptionKey: Utils.generateRandomTextValue(16),
         id: Utils.generateRandomHexValue(32),
         modelId: plugPacket.getModelId(),
+        orviboKey: plugPacket.getOrviboKey()
     };
     respondAndSetData(pkData, socket, PacketBuilder.helloPacket);
 };

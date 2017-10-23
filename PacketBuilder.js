@@ -1,11 +1,8 @@
 const crc32 = require('buffer-crc32');
 const crypto = require('crypto');
-const Settings = require('./OrviboSettings');
-
-const ORVIBO_KEY = Settings.ORVIBO_KEY;
 
 let Packet = {
-    encryptionKey : ORVIBO_KEY,
+    encryptionKey : '',
     magic: new Buffer("6864", 'hex'),
     build: function () {
         let packetId = new Buffer(this.id, 'ascii');
@@ -24,7 +21,7 @@ let DKPacket = Object.assign({}, Packet, {
     packetType: new Buffer('dk', 'ascii'),
 });
 
-let helloPacket = function({ serial, encryptionKey, id }) {
+let helloPacket = function({ serial, encryptionKey, id, orviboKey }) {
     let json = {
         cmd: 0,
         status: 0,
@@ -34,7 +31,8 @@ let helloPacket = function({ serial, encryptionKey, id }) {
 
     let pkt = Object.assign(Object.create(PKPacket), {
         json: json,
-        id: id
+        id: id,
+        encryptionKey: orviboKey,
     });
 
     return pkt.build();
@@ -51,7 +49,7 @@ let handshakePacket = function({ serial, encryptionKey, id }) {
     let pkt = Object.assign(Object.create(DKPacket), {
         json: json,
         id: id,
-        encryptionKey, encryptionKey
+        encryptionKey: encryptionKey
     });
 
     return pkt.build();
@@ -69,7 +67,7 @@ let heartbeatPacket = function({serial, uid, encryptionKey, id}) {
     let pkt = Object.assign(Object.create(DKPacket), {
         json: json,
         id: id,
-        encryptionKey, encryptionKey
+        encryptionKey,
     });
 
     return pkt.build();
@@ -77,7 +75,7 @@ let heartbeatPacket = function({serial, uid, encryptionKey, id}) {
 
 let comfirmStatePacket = function({serial, uid, state, encryptionKey, id}) {
 
-    var json = {
+    let json = {
         uid: uid,
         cmd: 42,
         statusType: 0,
@@ -95,7 +93,7 @@ let comfirmStatePacket = function({serial, uid, state, encryptionKey, id}) {
     let pkt = Object.assign(Object.create(DKPacket), {
         json: json,
         id: id,
-        encryptionKey, encryptionKey
+        encryptionKey,
     });
 
     return pkt.build();
@@ -113,7 +111,7 @@ let defaultPacket = function({serial, uid, cmd, id, encryptionKey}) {
     let pkt = Object.assign(Object.create(DKPacket), {
         json: json,
         id: id,
-        encryptionKey, encryptionKey
+        encryptionKey,
     });
 
     return pkt.build();
@@ -140,7 +138,7 @@ let updatePacket = function({ uid, state, serial, id, clientSessionId , deviceId
     let pkt = Object.assign(Object.create(DKPacket), {
         json: json,
         id: id,
-        encryptionKey, encryptionKey
+        encryptionKey,
     });
 
     return pkt.build();

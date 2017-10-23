@@ -11,10 +11,6 @@ let pkt = function(packetBuffer) {
 };
 
 pkt.prototype.logPacket = function(type) {
-    let output = {
-        PacketId : this.packetIdText(),
-        Payload : this.payloadJSON
-    };
     console.log(type, JSON.stringify(this.payloadJSON));
 };
 
@@ -40,10 +36,11 @@ pkt.prototype.getModelId = function() {
 
 pkt.prototype.processPacket = function(key) {
     this.payloadJSON = this.decodeJSON(key);
+    this.orviboKey = key;
 };
 
-pkt.prototype.getKeyValue = function() {
-    return this.payloadJSON.key;
+pkt.prototype.getOrviboKey = function() {
+    return this.orviboKey;
 };
 
 pkt.prototype.validCRC = function() {
@@ -52,10 +49,6 @@ pkt.prototype.validCRC = function() {
 
 pkt.prototype.packetTypeText = function() {
     return this.packetType.toString('ascii');
-};
-
-pkt.prototype.packetIdText = function() {
-    return this.packetId.toString('ascii');
 };
 
 pkt.prototype.decodeJSON = function(key) {
