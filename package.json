@@ -1,6 +1,6 @@
 {
   "name": "orvibo-b25-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A server to control the Orvibo B25 range of smart sockets",
   "main": "index.js",
   "scripts": {

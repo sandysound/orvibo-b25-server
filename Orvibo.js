@@ -6,15 +6,27 @@ const Utils = require('./Utils');
 const Settings = require('./OrviboSettings');
 const EventEmitter = require('events').EventEmitter;
 
-const ORVIBO_KEY = Settings.ORVIBO_KEY;
-const LOG_PACKET = Settings.LOG_PACKET;
+let socketSettings = Settings;
+
+let ORVIBO_KEY = socketSettings.ORVIBO_KEY;
+let LOG_PACKET = socketSettings.LOG_PACKET;
+
+let PLUG_INFO = Settings.plugInfo;
 
 if (ORVIBO_KEY === '') {
     console.log('Please add Orvibo PK key to OrviboSettings.js file. See Readme');
     process.exit(1);
 }
 
-const Orvibo = function() {};
+const Orvibo = function(userSettings) {
+    // Allow user to pass in settings
+    if (userSettings != null) {
+        socketSettings = userSettings;
+        ORVIBO_KEY = socketSettings.ORVIBO_KEY;
+        LOG_PACKET = socketSettings.LOG_PACKET;
+
+    }
+};
 
 Object.assign(Orvibo.prototype, EventEmitter.prototype);
 
@@ -28,16 +40,11 @@ let UNKNOWN_CMD = 'UNKNOWN_CMD';
 let port = 10001;
 let bindHost = '0.0.0.0';
 
-console.log(`Starting server Orvibo socket server on port ${port}`);
-
 let plugConnections = [];
 let packetData = {};
 
-// Put your smart socket data here and it will be matched to the uid
-let plugInfo = Settings.plugInfo;
-
 let getNameForUid = (uid) => {
-    let item = plugInfo.find(item => item.uid === uid);
+    let item = PLUG_INFO.find(item => item.uid === uid);
     return item != null ? item.name : 'unknown';
 };
 
@@ -120,8 +127,9 @@ Orvibo.prototype.handlers = function() {
 Orvibo.prototype.startServer = function() {
 
     let self = this;
-
     let handlers = this.handlers();
+
+    console.log(`Starting server Orvibo socket server on port ${port}`);
 
     this.server = net.createServer(function(socket) {
 
