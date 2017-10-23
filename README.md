@@ -15,9 +15,27 @@ Once the sockets have connected you can toggle them on and off
 
 To run this server you will need to have Node.js installed. I run v6.11.0 but it may work with earlier versions.
 
-You will need to add the Orvibo PK key to decrypt and encrypt the initial packets. You can find this using helpful bash script from Grayda [getKey.sh](https://gist.github.com/Grayda/eb48093bcfb96bfeec9c58ea301f2668)
-Once you have this key you will need to add it the ``OrviboSettings.js`` file.
+You will need to add the Orvibo PK key to decrypt and encrypt the initial packets.
+You can find this using helpful bash script from Grayda [getKey.sh](https://gist.github.com/Grayda/eb48093bcfb96bfeec9c58ea301f2668) (you may have to add www to to url to make it work)
+Once you have this key you will need to add it the ``OrviboSettings.js`` file or you can pass it into as part of the settings object when you create the orvibo server object.
 
+You can see this in the Example.js file
+```
+// Create a settings object to pass PK key and map sockets to names
+const settings = {
+    LOG_PACKET: false, //Show incoming packet data from the socket
+    ORVIBO_KEY: '', // put your PK key here as plain text (See Readme)
+    plugInfo : [
+        // Add uid and a name so you can easily identify the connected sockets
+        {
+            uid :'53dd7fe74de7',
+            name: "Lamp in Kitchen"
+        },
+    ],
+};
+
+let orvbio = new Orvibo(settings);
+```
 
 Because these new sockets don't use UDP packets to communicate like the older versions you will also need to redirect all traffic from the host name ``homemate.orvibo.com``
 on TCP port 10001 the computer running the server.
@@ -34,11 +52,19 @@ to the official Orvibo server.
 
 ### Installing
 
+From Github
+
 Clone the repo and then run
 ```
 npm install 
 ```
 to install the dependencies (buffer-crc32)
+
+or from npm just run
+
+```
+npm i orvibo-b25-server
+```
 
 
 ### Usage  
@@ -51,7 +77,7 @@ To start the example http server run
 npm start 
 ```
 This will start the Orvibo socket server create a basic example HTTP server used for interacting with sockets.
-Calling this http server with no parameters will return the uid, state, modelId and name of the socket.
+Calling this http server with no parameters will return the uid, state or the switch, modelId and name of the socket.
 
 You can then use the uid to toggle the state of the switch like http://localhost:3000?uid=5dcf7ff76e7a
 
@@ -59,13 +85,18 @@ One thing to note is the Orvibo uses 1 as off and 0 as on for the socket state.
 
 ## Configuration
 
-One you've got a socket connecting you can add it to the plugInfo array in the OrviboSettings.js file.
+One you've got a socket connecting you can add it to the plugInfo array in the OrviboSettings.js or to your settings object you pass in.
 This will match to uid to a name so you can easily see which socket is which.
 
 ## Contributing
 
 I'm more than happy for other people to contribute to this library just send a pull request.
-I'm also quite new to node.js so any constructive criticism will be happily accepted. 
+
+This project will probably work with other versions of the smart sockets that use the homemate app.
+If you manage to get it working let me know so I can add it here as supported.
+
+Also if you'd like to contribute to help me buy additional Orvibo products to add to this server or the software has helped you in your own home automation projects and you just want to buy me a beer. You can sponsor it via my paypal account at
+[http://paypal.me/sandysounds](http://paypal.me/sandysounds)
 
 ## Authors
 
