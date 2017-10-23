@@ -13,18 +13,17 @@ let LOG_PACKET = socketSettings.LOG_PACKET;
 
 let PLUG_INFO = Settings.plugInfo;
 
-if (ORVIBO_KEY === '') {
-    console.log('Please add Orvibo PK key to OrviboSettings.js file. See Readme');
-    process.exit(1);
-}
-
 const Orvibo = function(userSettings) {
     // Allow user to pass in settings
     if (userSettings != null) {
         socketSettings = userSettings;
         ORVIBO_KEY = socketSettings.ORVIBO_KEY;
         LOG_PACKET = socketSettings.LOG_PACKET;
+    }
 
+    if (ORVIBO_KEY === '') {
+        console.log('Please pass Orvibo PK key details via the constructor or add to OrviboSettings.js file. See Readme');
+        process.exit(1);
     }
 };
 
