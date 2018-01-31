@@ -4,20 +4,7 @@ const url = require('url');
 
 const httpPort = 3000;
 
-// Create a settings object to pass PK key and map sockets to names
-const settings = {
-    LOG_PACKET: false, //Show incoming packet data from the socket
-    ORVIBO_KEY: '', // put your PK key here as plain text (See Readme)
-    plugInfo : [
-        // Add uid and a name so you can easily identify the connected sockets
-        {
-            uid :'53dd7fe74de7',
-            name: "Lamp in Kitchen"
-        },
-    ],
-};
-
-let orvbio = new Orvibo(settings);
+let orvbio = new Orvibo();
 
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
 orvbio.on('plugConnected', ({uid, name}) => {
