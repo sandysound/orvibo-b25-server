@@ -4,7 +4,7 @@ const url = require('url');
 
 const httpPort = 3000;
 
-let orvbio = new Orvibo(settings);
+let orvbio = new Orvibo();
 
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
 orvbio.on('plugConnected', ({uid, name}) => {
