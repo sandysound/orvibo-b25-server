@@ -100,11 +100,13 @@ This will match to uid to a name so you can easily see which socket is which.
 ## Confirmed Working Models
 
 A list of Orvibo devices, confirmed by contributors, that work with this project:
+
+
 | Device Name | Product ID | Confirmed By |
-|------------ | :--------:| -----:|
-| Orvibo Smart Socket (EU/AUS)| B25 | @sandysound|
-| Orvibo Smart Socket (US/CAD)| S25 | @wichopy |
-| Orvibo Smart Socket (UK/GB)| B25UK | @valchonedelchev|
+| --- | --- | --- |
+| Orvibo Smart Socket (EU/AUS) | B25 | @sandysound |
+| Orvibo Smart Socket (US/CAD) | S25 | @wichopy |
+| Orvibo Smart Socket (UK/GB) | B25UK | @valchonedelchev |
 
 ## Contributing
 
