@@ -37,7 +37,7 @@ const settings = {
     ],
 };
 
-let orvbio = new Orvibo(settings);
+let orvibo = new Orvibo(settings);
 ```
 
 Because these new sockets don't use UDP packets to communicate like the older versions you will also need to redirect all traffic from the host name ``homemate.orvibo.com``
