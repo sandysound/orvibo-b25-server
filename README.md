@@ -104,6 +104,7 @@ A list of Orvibo devices, confirmed by contributors, that work with this project
 |------------ | :--------:| -----:|
 | Orvibo Smart Socket (EU/AUS)| B25 | @sandysound|
 | Orvibo Smart Socket (US/CAD)| S25 | @wichopy |
+| Orvibo Smart Socket (UK/GB)| B25UK | @valchonedelchev|
 
 ## Contributing
 
