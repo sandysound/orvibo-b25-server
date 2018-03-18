@@ -1,0 +1,14 @@
+{
+  "http_server": {
+    "port": 3000
+  },
+  "orvibo_server": {
+    "key": "",
+    "sockets": [
+      {
+        "name": "Bedroom",
+        "uid": "5ccf7f22703d"
+      }
+    ]
+  }
+}
