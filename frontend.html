@@ -1,0 +1,74 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css"> 
+    <style>
+       body {
+         padding: 1em;
+       }
+
+       #sockets {
+         padding-top: 1em;
+         border-top: 1px solid lightGrey;
+       }
+
+       .socket .switch, .socket .name {
+         display: inline-block;
+       }
+    </style>
+
+    <title>Orvibo Web Controller</title>
+  </head>
+  <body>
+    <h1>Sockets</h1>
+    <div id="sockets">
+      <div class="loader h3">Loading...</div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+
+    <script>
+      $(document).foundation();
+
+      $(document).ready(() => {
+        $.getJSON('/sockets', function(data) {
+          console.log('Socket data: ' + JSON.stringify(data));
+          var socketsList = $('#sockets');
+          socketsList.empty();
+          var sockets = data.sort((a, b) => {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+          });
+          $.each(sockets, function(index, socket) {
+            socketsList.append($(`
+              <div class="socket" data-uid="${socket.uid}">
+                <div class="switch large">
+                  <input type="checkbox" id="switch${index}" class="switch-input" ${socket.state == 0 ? "checked" : ""}>
+                  <label class="switch-paddle" for="switch${index}">
+                    <span class="show-for-sr">${socket.name}</span>
+                  </label>
+                </div>
+                <div class="name">
+                  <span class="h2">${socket.name}</span>
+                </div>
+              </div>
+            `));
+          });
+
+          $('#sockets :checkbox').each(function() {
+            $(this).change(function() {
+              var uid = $(this).closest('.socket').attr('data-uid');
+              $.ajax(`/sockets/${uid}/toggle`);
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
