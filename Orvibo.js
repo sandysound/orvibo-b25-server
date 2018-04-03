@@ -11,13 +11,12 @@ let ORVIBO_KEY = Settings.ORVIBO_KEY;
 let LOG_PACKET = Settings.LOG_PACKET;
 let PLUG_INFO = Settings.plugInfo;
 
-const Orvibo = function(userSettings) {
+const Orvibo = function(userSettings = {}) {
     // Allow user to pass in settings
-    if (userSettings != null) {
-        ORVIBO_KEY = userSettings.ORVIBO_KEY;
-        LOG_PACKET = userSettings.LOG_PACKET;
-        PLUG_INFO = userSettings.plugInfo;
-    }
+    if('ORVIBO_KEY' in userSettings) ORVIBO_KEY = userSettings.ORVIBO_KEY;
+    if('plugInfo' in userSettings) PLUG_INFO = userSettings.plugInfo;
+    if('PLUG_INFO' in userSettings) PLUG_INFO = userSettings.PLUG_INFO;
+    if('LOG_PACKET' in userSettings) LOG_PACKET = userSettings.LOG_PACKET;
 
     if (ORVIBO_KEY === '') {
         logger.log('Please pass Orvibo PK key details via the constructor or add to OrviboSettings.js file. See Readme');
