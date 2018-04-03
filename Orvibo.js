@@ -147,10 +147,15 @@ Orvibo.prototype.startServer = function() {
                 return;
             }
 
-            if (plugPacket.packetTypeText() === 'pk') {
-                plugPacket.processPacket(ORVIBO_KEY);
-            } else {
-                plugPacket.processPacket(socketData.encryptionKey);
+            try {
+                if (plugPacket.packetTypeText() === 'pk') {
+                    plugPacket.processPacket(ORVIBO_KEY);
+                } else {
+                    plugPacket.processPacket(socketData.encryptionKey);
+                }
+            } catch(err) {
+                logger.log('Failed to parse packet: ' + err);
+                return;
             }
 
             LOG_PACKET && plugPacket.logPacket('Socket -> ');
