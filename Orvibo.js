@@ -218,7 +218,7 @@ Orvibo.prototype.toggleSocket = function(uid) {
     }
 };
 
-Orvibo.prototype.getConnectedSocket = function() {
+Orvibo.prototype.getConnectedSockets = function() {
     let sockets = [];
     for (const key of Object.keys(packetData)) {
         let socketData = getData(key);
@@ -231,6 +231,8 @@ Orvibo.prototype.getConnectedSocket = function() {
     }
     return sockets;
 };
+
+Orvibo.prototype.getConnectedSocket = Orvibo.prototype.getConnectedSockets;
 
 Orvibo.prototype.setLogger = function(newLogger) {
   logger = newLogger;
