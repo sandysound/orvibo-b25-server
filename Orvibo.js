@@ -5,6 +5,8 @@ const Utils = require('./Utils');
 const Settings = require('./OrviboSettings');
 const EventEmitter = require('events').EventEmitter;
 
+let logger = console;
+
 let ORVIBO_KEY = Settings.ORVIBO_KEY;
 let LOG_PACKET = Settings.LOG_PACKET;
 let PLUG_INFO = Settings.plugInfo;
@@ -18,7 +20,7 @@ const Orvibo = function(userSettings) {
     }
 
     if (ORVIBO_KEY === '') {
-        console.log('Please pass Orvibo PK key details via the constructor or add to OrviboSettings.js file. See Readme');
+        logger.log('Please pass Orvibo PK key details via the constructor or add to OrviboSettings.js file. See Readme');
         process.exit(1);
     }
 };
@@ -75,6 +77,7 @@ let handshakeHandler = function(plugPacket, socket, socketData) {
         name: getNameForUid(uid)
     });
     respondAndSetData(pkData, socket, PacketBuilder.handshakePacket);
+    logger.log(`Connected ${pkData.uid} name = ${pkData.name}`);
     this.emit('plugConnected', {uid:pkData.uid, name: pkData.name});
 };
 
@@ -84,6 +87,7 @@ let heartbeatHandler = function(plugPacket, socket, socketData) {
         uid: plugPacket.getUid()
     });
     respondAndSetData(pkData, socket, PacketBuilder.heartbeatPacket);
+    logger.log(`Plug ${pkData.name} ${pkData.uid} sent heartbeat`);
     this.emit('gotHeartbeat', {uid:pkData.uid, name: pkData.name});
 };
 
@@ -94,6 +98,7 @@ let stateUpdateHandler = function(plugPacket, socket, socketData) {
         state: plugPacket.getValue1()
     });
     respondAndSetData(pkData, socket, PacketBuilder.comfirmStatePacket);
+    logger.log(`Plug ${pkData.name} ${pkData.uid} updated state ${pkData.state}`);
     this.emit('plugStateUpdated', {uid:pkData.uid, state: pkData.state, name: pkData.name});
 };
 
@@ -125,7 +130,7 @@ Orvibo.prototype.startServer = function() {
     let self = this;
     let handlers = this.handlers();
 
-    console.log(`Starting server Orvibo socket server on port ${port}`);
+    logger.log(`Starting server Orvibo socket server on port ${port}`);
 
     this.server = net.createServer(function(socket) {
 
@@ -139,7 +144,7 @@ Orvibo.prototype.startServer = function() {
             let plugPacket = new Packet(data);
 
             if (!plugPacket.validCRC()) {
-                console.log('Got invalid CRC');
+                logger.log('Got invalid CRC');
                 return;
             }
 
@@ -149,7 +154,7 @@ Orvibo.prototype.startServer = function() {
                 plugPacket.processPacket(socketData.encryptionKey);
             }
 
-            LOG_PACKET && plugPacket.logPacket("Socket -> ");
+            LOG_PACKET && plugPacket.logPacket('Socket -> ');
 
             let handler = handlers[plugPacket.getCommand()];
             if (handler != null) {
@@ -161,14 +166,15 @@ Orvibo.prototype.startServer = function() {
 
         socket.on('end', function () {
             let pkData = getData(socket.id);
+            logger.log(`Plug ${pkData.uid} - ${pkData.name} disconnected`);
             self.emit('plugDisconnected', {uid: pkData.uid, name: pkData.name});
             delete packetData[socket.id];
             plugConnections.splice(plugConnections.indexOf(socket), 1);
         });
 
         socket.on('error', (err) => {
-            console.log(err);
-            console.log('error with socket ' + socket.id);
+            logger.log(err);
+            logger.log(`Plug ${socket.id} - ${socket.name} disconnected with error`);
             self.emit('plugDisconnectedWithError', getData(socket.id));
             delete packetData[socket.id];
             plugConnections.splice(plugConnections.indexOf(socket), 1);
@@ -190,7 +196,7 @@ Orvibo.prototype.toggleSocket = function(uid) {
         }
     }
     if (socketId === null) {
-        console.log('Could not find socket ' + uid);
+        logger.log('Could not find socket ' + uid);
         return;
     }
     let socket = plugConnections.find(s => s.id === socketId);
@@ -209,7 +215,7 @@ Orvibo.prototype.toggleSocket = function(uid) {
         socket.write(packet);
 
     } else {
-        console.log('Can not find socket ');
+        logger.log('Can not find socket ');
     }
 };
 
@@ -225,6 +231,10 @@ Orvibo.prototype.getConnectedSocket = function() {
         });
     }
     return sockets;
+};
+
+Orvibo.prototype.setLogger = function(newLogger) {
+  logger = newLogger;
 };
 
 module.exports = Orvibo;
