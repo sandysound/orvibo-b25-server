@@ -16,7 +16,7 @@ const settings = {
         },
     ],
 };
-console.log(settings.ORVIBO_KEY)
+
 let orvibo = new Orvibo(settings);
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
 orvibo.on('plugConnected', ({uid, name}) => {
