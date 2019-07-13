@@ -8,9 +8,10 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+RUN npm install
 
 # Bundle app source
 COPY . .
 
-EXPOSE 3000 10001
+EXPOSE 3000 10001/udp
 CMD [ "node", "Example.js" ]
