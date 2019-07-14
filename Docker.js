@@ -4,23 +4,28 @@ const url = require('url');
 
 const httpPort = 3000;
 
-const table =
-process.env.plugArray.split(",") //["key:value","key:value"]
-  .map(pair => pair.split(":")); //[["key","value"],["key","value"]]
-  
-  const plugArray = {};
-table.forEach(([key,value]) => plugArray[key] = value);
-
+const createArray = str => {
+    // split on each comma
+    const arr = str.split(',');
+    // put back elements by pairs
+    const pairs = [];
+    for (let i=0; i<arr.length; i+=2) {
+      let o = {};
+      o.uid = arr[i].split(':')[1];
+      o.name = arr[i+1].split(':')[1];
+      pairs.push(o);
+    }
+    return pairs;
+  }
 
 // Create a settings object to pass PK key and map sockets to names
 const settings = {
     LOG_PACKET: true, //Show incoming packet data from the socket
     ORVIBO_KEY: process.env.orviboPK,
     plugInfo : [
-       plugArray
+        createArray(process.env.plugArray)
     ],
 };
-  
 let orvibo = new Orvibo(settings);
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
 orvibo.on('plugConnected', ({uid, name}) => {
@@ -65,7 +70,8 @@ const requestHandler = (request, response) => {
     }
 
     // Get all currently connected sockets, their names and states
-    let sockets = orvibo.getConnectedSocket();
+    // let sockets = orvibo.getConnectedSocket();
+    let sockets = [{"name":"3D Printer","state":1,"uid":"5ccf7f22fba4","modelId":"f8b11bed724647e98bd07a66dca6d5b6"}]
 
     response.end(JSON.stringify(sockets));
 };
