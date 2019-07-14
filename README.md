@@ -108,6 +108,15 @@ A list of Orvibo devices, confirmed by contributors, that work with this project
 | Orvibo Smart Socket (US/CAD) | S25 | @wichopy |
 | Orvibo Smart Socket (UK/GB) | B25UK | @valchonedelchev |
 
+## Docker
+
+I have extened this project to also run in a docker container.
+
+PK and PlugArray can be passed in via enviroment variables.
+
+orviboPK = 'xxxxx'
+plugArray = 'uid:MACADDRESS,name:PRINTERNAME'
+
 ## Contributing
 
 I'm more than happy for other people to contribute to this library just send a pull request.
