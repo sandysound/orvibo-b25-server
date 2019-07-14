@@ -22,9 +22,9 @@ const createArray = str => {
 const settings = {
     LOG_PACKET: true, //Show incoming packet data from the socket
     ORVIBO_KEY: process.env.orviboPK,
-    plugInfo : [
+    plugInfo : 
         createArray(process.env.plugArray)
-    ],
+    ,
 };
 let orvibo = new Orvibo(settings);
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
@@ -70,9 +70,7 @@ const requestHandler = (request, response) => {
     }
 
     // Get all currently connected sockets, their names and states
-    // let sockets = orvibo.getConnectedSocket();
-    let sockets = [{"name":"3D Printer","state":1,"uid":"5ccf7f22fba4","modelId":"f8b11bed724647e98bd07a66dca6d5b6"}]
-
+    let sockets = orvibo.getConnectedSocket();
     response.end(JSON.stringify(sockets));
 };
 
