@@ -232,6 +232,10 @@ PK and PlugArray can be passed in via enviroment variables.
  - orviboPK = 'xxxxx'
  - plugArray = 'uid:MACADDRESS,name:PRINTERNAME'
 
+Example run command -
+
+    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS,name:PLUGNAME' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server
+
   
 
 ## Contributing
