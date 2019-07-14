@@ -70,9 +70,7 @@ const requestHandler = (request, response) => {
     }
 
     // Get all currently connected sockets, their names and states
-    // let sockets = orvibo.getConnectedSocket();
-    let sockets = [{"name":"3D Printer","state":1,"uid":"5ccf7f22fba4","modelId":"f8b11bed724647e98bd07a66dca6d5b6"}]
-
+    let sockets = orvibo.getConnectedSocket();
     response.end(JSON.stringify(sockets));
 };
 
