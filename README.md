@@ -184,7 +184,44 @@ You can then use the uid to toggle the state of the switch like http://localhost
 
 One thing to note is the Orvibo uses 1 as off and 0 as on for the socket state.
 
+## Docker
+
   
+
+I have extened this project to also run in a docker container.
+
+  
+
+PK and PlugArray can be passed in via enviroment variables.
+
+  
+
+ - orviboPK = 'xxxxx'
+ - plugArray = 'uid:MACADDRESS,name:PRINTERNAME'
+
+Example run command -
+
+    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS,name:PLUGNAME' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server  
+
+Docker-Compose example -
+
+      orvibo-b25-server:
+    container_name: orvibo-b25-server
+    environment:
+    - PGID=${PGID}
+    - PUID=${PUID}
+    - TZ=${TZ}
+    image: karl0ss/orvibo-b25-server
+    ports:
+    - "3000:3000"
+    - "10001:10001"
+    restart: unless-stopped
+    environment:
+        - orviboPK=OrviboPKkey
+        - plugArray=uid:MACADDRESS,name:PLUGNAME
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /mnt/orvibo-b25-server:/usr/src/app
 
 ## Configuration
 
@@ -214,28 +251,6 @@ A list of Orvibo devices, confirmed by contributors, that work with this project
 | Orvibo Smart Socket (US/CAD) | S25 | @wichopy |
 
 | Orvibo Smart Socket (UK/GB) | B25UK | @valchonedelchev |
-
-  
-
-## Docker
-
-  
-
-I have extened this project to also run in a docker container.
-
-  
-
-PK and PlugArray can be passed in via enviroment variables.
-
-  
-
- - orviboPK = 'xxxxx'
- - plugArray = 'uid:MACADDRESS,name:PRINTERNAME'
-
-Example run command -
-
-    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS,name:PLUGNAME' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server
-
   
 
 ## Contributing
