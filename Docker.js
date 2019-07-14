@@ -22,9 +22,9 @@ const createArray = str => {
 const settings = {
     LOG_PACKET: true, //Show incoming packet data from the socket
     ORVIBO_KEY: process.env.orviboPK,
-    plugInfo : [
+    plugInfo : 
         createArray(process.env.plugArray)
-    ],
+    ,
 };
 let orvibo = new Orvibo(settings);
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
