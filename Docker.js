@@ -4,21 +4,24 @@ const url = require('url');
 
 const httpPort = 3000;
 
+const table =
+process.env.plugArray.split(",") //["key:value","key:value"]
+  .map(pair => pair.split(":")); //[["key","value"],["key","value"]]
+  
+  const plugArray = {};
+table.forEach(([key,value]) => plugArray[key] = value);
+
+
 // Create a settings object to pass PK key and map sockets to names
 const settings = {
-    LOG_PACKET: false, //Show incoming packet data from the socket
-    ORVIBO_KEY: '', // put your PK key here as plain text (See Readme)
+    LOG_PACKET: true, //Show incoming packet data from the socket
+    ORVIBO_KEY: process.env.orviboPK,
     plugInfo : [
-        // Add uid and a name so you can easily identify the connected sockets
-        {
-            uid :'53dd7fe74de7',
-            name: "Lamp in Kitchen"
-        },
+       plugArray
     ],
 };
-
+  
 let orvibo = new Orvibo(settings);
-
 // When a socket first connects and initiates the handshake it will emit the connected event with the uid of the socket;
 orvibo.on('plugConnected', ({uid, name}) => {
     console.log(`Connected ${uid} name = ${name}`);
