@@ -11,8 +11,8 @@ const settings = {
     plugInfo : [
         // Add uid and a name so you can easily identify the connected sockets
         {
-            uid :'53dd7fe74de7',
-            name: "Lamp in Kitchen"
+            uid :'5ccf7f22fba4',
+            name: "3D Printer"
         },
     ],
 };

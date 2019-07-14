@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000 10001/udp
+EXPOSE 3000 10001
 
 CMD [ "node", "Example.js" ]
