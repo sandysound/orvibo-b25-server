@@ -1,3 +1,4 @@
+
 # Orvibo B25 Smart Socket Server
 
 A server to control the B25 range of wifi Smart Sockets
@@ -92,6 +93,37 @@ You can then use the uid to toggle the state of the switch like http://localhost
 
 One thing to note is the Orvibo uses 1 as off and 0 as on for the socket state.
 
+## Docker
+I have extened this project to also run in a docker container.
+
+PK and PlugArray can be passed in via enviroment variables.
+
+- orviboPK = 'xxxxx'
+- plugArray = 'uid:MACADDRESS,name:PRINTERNAME'
+
+Example run command -
+
+    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS1,name:PLUGNAME1,uid:MACADDRESS2,name:PLUGNAME2' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server:original
+
+Docker-Compose example -
+
+      orvibo-b25-server:
+        container_name: orvibo-b25-server
+        environment:
+        - PGID=${PGID}
+        - PUID=${PUID}
+        - TZ=${TZ}
+        image: karl0ss/orvibo-b25-server:original
+        ports:
+        - "3000:3000"
+        - "10001:10001"
+        restart: unless-stopped
+        environment:
+            - orviboPK=OrviboPKkey
+            - plugArray=uid:MACADDRESS1,name:PLUGNAME1,uid:MACADDRESS2,name:PLUGNAME2
+        volumes:
+        - /etc/localtime:/etc/localtime:ro
+
 ## Configuration
 
 Once you've got a socket connecting to the official app you can add it to the plugInfo array in the OrviboSettings.js or to your settings object you pass in.
@@ -128,4 +160,4 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LIC
 
 ## Acknowledgments
 
-Big thanks to [Grayda](https://github.com/Grayda/) and [insertjokehere](https://github.com/insertjokehere) for all their research and hard work into how these sockets work 
+Big thanks to [Grayda](https://github.com/Grayda/) and [insertjokehere](https://github.com/insertjokehere) for all their research and hard work into how these sockets work
