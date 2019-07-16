@@ -103,7 +103,7 @@ PK and PlugArray can be passed in via enviroment variables.
 
 Example run command -
 
-    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS1,name:PLUGNAME1,uid:MACADDRESS2,name:PLUGNAME2' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server
+    docker run --env orviboPK='OrviboPKkey' --env plugArray='uid:MACADDRESS1,name:PLUGNAME1,uid:MACADDRESS2,name:PLUGNAME2' -p 3000:3000 -p 10001:10001 karl0ss/orvibo-b25-server:original
 
 Docker-Compose example -
 
@@ -113,7 +113,7 @@ Docker-Compose example -
         - PGID=${PGID}
         - PUID=${PUID}
         - TZ=${TZ}
-        image: karl0ss/orvibo-b25-server
+        image: karl0ss/orvibo-b25-server:original
         ports:
         - "3000:3000"
         - "10001:10001"
