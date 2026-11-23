@@ -3,9 +3,9 @@ const crypto = require('crypto');
 
 let Packet = {
     encryptionKey : '',
-    magic: new Buffer("6864", 'hex'),
+    magic: Buffer.from("6864", 'hex'),
     build: function () {
-        let packetId = new Buffer(this.id, 'ascii');
+        let packetId = Buffer.from(this.id, 'ascii');
         let payload = encodePayload(JSON.stringify(this.json), this.encryptionKey);
         let crc = crc32(payload);
         let length = getLength([this.magic, this.packetType, packetId, crc, payload], 2); // Extra 2 for the length field itself
@@ -14,11 +14,11 @@ let Packet = {
 };
 
 let PKPacket = Object.assign({}, Packet, {
-    packetType: new Buffer('pk', 'ascii'),
+    packetType: Buffer.from('pk', 'ascii'),
 });
 
 let DKPacket = Object.assign({}, Packet, {
-    packetType: new Buffer('dk', 'ascii'),
+    packetType: Buffer.from('dk', 'ascii'),
 });
 
 let helloPacket = function({ serial, encryptionKey, id, orviboKey }) {
@@ -146,11 +146,11 @@ let updatePacket = function({ uid, state, serial, id, clientSessionId , deviceId
 
 
 let encodePayload = function(json, key) {
-    let cipher = crypto.createCipheriv('aes-128-ecb', key, '');
+    let cipher = crypto.createCipheriv('aes-128-ecb', key, null);
     cipher.setAutoPadding(true);
     let crypted = cipher.update(json,'utf8','hex');
     crypted += cipher.final('hex');
-    return new Buffer(crypted, 'hex');
+    return Buffer.from(crypted, 'hex');
 };
 
 let getLength = function(items, extra) {
@@ -168,7 +168,7 @@ let getHexLengthPadded = function(lengthDecimal) {
     for (let i = 0; i < paddingLength; i++) {
         padding +=0;
     }
-    return new Buffer(padding + lengthHex, 'hex');
+    return Buffer.from(padding + lengthHex, 'hex');
 };
 
 
@@ -178,3 +178,9 @@ module.exports.heartbeatPacket = heartbeatPacket;
 module.exports.comfirmStatePacket = comfirmStatePacket;
 module.exports.defaultPacket = defaultPacket;
 module.exports.updatePacket = updatePacket;
+// Build an arbitrary packet. type is 'pk' (encrypted with the Orvibo PK key) or 'dk' (session key).
+module.exports.buildPacket = function(type, id, json, encryptionKey) {
+    let base = type === 'pk' ? PKPacket : DKPacket;
+    let pkt = Object.assign(Object.create(base), { json, id, encryptionKey });
+    return pkt.build();
+};

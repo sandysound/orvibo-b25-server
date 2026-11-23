@@ -1,13 +1,12 @@
 const Orvibo = require('./Orvibo');
 const http = require('http');
-const url = require('url');
 
 const httpPort = 3000;
 
 // Create a settings object to pass PK key and map sockets to names
 const settings = {
     LOG_PACKET: false, //Show incoming packet data from the socket
-    ORVIBO_KEY: '', // put your PK key here as plain text (See Readme)
+    ORVIBO_KEY: process.env.ORVIBO_KEY || '', // put your PK key here as plain text (See Readme)
     plugInfo : [
         // Add uid and a name so you can easily identify the connected sockets
         {
@@ -56,13 +55,13 @@ orvibo.startServer();
 
 const requestHandler = (request, response) => {
     response.writeHead(200, {'Content-Type': 'application/json'});
-    let q = url.parse(request.url, true).query;
-    if (q.uid != null) {
-        orvibo.toggleSocket(q.uid);
+    const uid = new URL(request.url, 'http://localhost').searchParams.get('uid');
+    if (uid != null) {
+        orvibo.toggleSocket(uid);
     }
 
     // Get all currently connected sockets, their names and states
-    let sockets = orvibo.getConnectedSocket();
+    let sockets = orvibo.getConnectedSockets();
 
     response.end(JSON.stringify(sockets));
 };
