@@ -1,10 +1,10 @@
 {
   "name": "orvibo-b25-server",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A server to control the Orvibo B25 range of smart sockets",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.js",
     "start": "node Example.js"
   },
   "repository": {
@@ -25,5 +25,16 @@
   "homepage": "https://github.com/sandysound/orvibo-b25-server#readme",
   "dependencies": {
     "buffer-crc32": "^0.2.13"
-  }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "index.js",
+    "Orvibo.js",
+    "OrviboPacket.js",
+    "OrviboSettings.js",
+    "PacketBuilder.js",
+    "Utils.js"
+  ]
 }

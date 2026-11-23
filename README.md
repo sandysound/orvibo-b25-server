@@ -13,7 +13,7 @@ Once the sockets have connected you can toggle them on and off
 
 ## Getting Started
 
-To run this server you will need to have Node.js installed. I run v6.11.0 but it may work with earlier versions.
+To run this server you will need to have Node.js installed. It needs Node 18 or later.
 
 You will need to add the Orvibo PK key to decrypt and encrypt the initial packets.
 You can find this using helpful bash script from Grayda [getKey.sh](https://gist.github.com/Grayda/eb48093bcfb96bfeec9c58ea301f2668) (you may have to add www to to url to make it work)
@@ -89,6 +89,8 @@ This will start the Orvibo socket server create a basic example HTTP server used
 Calling this http server with no parameters will return the uid, state or the switch, modelId and name of the socket.
 
 You can then use the uid to toggle the state of the switch like http://localhost:3000?uid=5dcf7ff76e7a
+
+To set a socket explicitly rather than toggle it, call `orvibo.setState(uid, true)` (on) or `orvibo.setState(uid, false)` (off).
 
 One thing to note is the Orvibo uses 1 as off and 0 as on for the socket state.
 
